@@ -1,0 +1,39 @@
+---
+title: "final_practice"
+author: "Andy_Chen"
+date: "February 22, 2019"
+output: html_document
+---
+
+```{r setup}
+knitr::opts_chunk$set(include=FALSE, echo = TRUE, message = FALSE)
+library(titanic)
+andy_titanic <- as.data.frame(titanic_train)
+andy_logit <- glm(Survived~Pclass+Sex+Age+SibSp, data = titanic_train, family = "binomial")
+summary(andy_logit)
+
+```
+
+## Then try another item
+
+This will be decision tree. Look below:
+
+```{r decision_tree, echo = FALSE}
+library(rpart)
+library(rpart.plot)
+library(titanic)
+andy_titanic <- as.data.frame(titanic_train)
+andy_tree <- rpart(Survived~Pclass+Sex+Age+SibSp, data = titanic_train, method = "class")
+rpart.plot(andy_tree, type = 2, extra = "auto", box.palette = c("blue", "pink"), shadow.col = "gray")
+plotcp(andy_tree)
+```
+
+## Prediction
+
+Compare prediction of logistic and decision tree:
+
+```{r prediction, echo=FALSE}
+predict_andy_logit <- predict(andy_logit, andy_titanic, type = "response")
+predict_andy_tree <- predict(andy_tree, andy_titanic, type = "prob")
+```
+
